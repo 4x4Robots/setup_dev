@@ -37,11 +37,10 @@ execute() {
     "$@"
 }
 
-log "RUN: env: $env -- filter: $grep"
+log "RUN: env: $env -- filter: $filter"
 
 # Get all scripts (executable files) in directory ./runs/
-cd $script_dir
-scripts=$(find ./runs -maxdepth 1 -mindepth 1 -executable -type f)
+scripts=`find $script_dir/runs -maxdepth 1 -mindepth 1 -executable -type f`
 
 # Execute each script
 log "Searching for scripts in runs/"
@@ -52,13 +51,7 @@ for script in $scripts; do
         continue
     fi
 
-    #log "running script: $script"
-
-    #if [[ $dry_run == "0" ]]; then
-    #    $script
-    #fi
-
-    execute ./$script
+    execute $script
 
 done
 
