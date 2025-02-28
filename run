@@ -1,0 +1,8 @@
+#!/usr/bin/env zsh
+
+echo "hello"
+
+script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
+
+echo "script_dir=$script_dir"
+
