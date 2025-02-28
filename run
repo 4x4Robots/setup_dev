@@ -10,3 +10,19 @@ echo "script_dir=$script_dir"
 filter="$1"
 echo "filter=$filter"
 
+# Get all scripts (executable files) in directory ./runs/
+cd $script_dir
+scripts=$(find ./runs -maxdepth 1 -mindepth 1 -executable -type f)
+
+# Execute each script
+echo "Searching for scripts in runs/"
+for script in $scripts; do
+    # script should not contain filter
+    if echo "$script" | grep -qv "$filter"; then
+        echo "filtering $script"
+        continue
+    fi
+
+    ./$script
+done
+
