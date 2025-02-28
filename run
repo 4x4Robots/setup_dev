@@ -1,8 +1,12 @@
 #!/usr/bin/env zsh
 
-echo "hello"
+echo "Starting setup_dev -> run"
 
-script_dir=$(cd $(dirname "${BASH_SOURCE[0]}") && pwd)
-
+# Get directory in which this script resides.
+script_dir="$( cd $( dirname "${BASH_SOURCE[0]}" ) &> /dev/null && pwd )"
 echo "script_dir=$script_dir"
+
+# Get first argument
+filter="$1"
+echo "filter=$filter"
 
