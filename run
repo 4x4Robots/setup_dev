@@ -6,23 +6,59 @@ echo "Starting setup_dev -> run"
 script_dir="$( cd $( dirname "${BASH_SOURCE[0]}" ) &> /dev/null && pwd )"
 echo "script_dir=$script_dir"
 
-# Get first argument
-filter="$1"
-echo "filter=$filter"
+# Init variables
+filter=""
+dry_run="0"
+
+# Parse arguments
+while [[ $# -gt 0 ]]; do
+    echo "ARG: \"$1\""
+    if [[ "$1" == "--dry" ]]; then
+        dry_run="1"
+    else
+        filter="$1"
+    fi
+    shift
+done
+
+log() {
+    if [[ $dry_run == "1" ]]; then
+        echo "[DRY_RUN]: $@"
+    else
+        echo "$@"
+    fi
+}
+
+execute() {
+    log "execute $@"
+    if [[ $dry_run == "1" ]]; then
+        return
+    fi
+    "$@"
+}
+
+log "RUN: env: $env -- filter: $grep"
 
 # Get all scripts (executable files) in directory ./runs/
 cd $script_dir
 scripts=$(find ./runs -maxdepth 1 -mindepth 1 -executable -type f)
 
 # Execute each script
-echo "Searching for scripts in runs/"
+log "Searching for scripts in runs/"
 for script in $scripts; do
-    # script should not contain filter
+    # script does not contain filter
     if echo "$script" | grep -qv "$filter"; then
-        echo "filtering $script"
+        log "grep \"$filter\" filtered out $script"
         continue
     fi
 
-    ./$script
+    #log "running script: $script"
+
+    #if [[ $dry_run == "0" ]]; then
+    #    $script
+    #fi
+
+    execute ./$script
+
 done
 
