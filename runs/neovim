@@ -1,4 +1,13 @@
 #!/usr/bin/env zsh
 
-echo "hello from neovim"
+echo "installing neovim"
+
+git clone -b v0.10.1 git@github.com:neovim/neovim.git ~/personal/neovim
+
+cd ~/personal/neovim
+git fetch
+
+sudo apt install cmake gettext lua5.1 liblua5.1-0-dev
+make CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make install
 
