@@ -2,12 +2,24 @@
 
 echo "installing neovim"
 
-git clone -b v0.10.1 git@github.com:neovim/neovim.git ~/personal/neovim
+version="v0.10.2"
+if [ ! -z $NVIM_VERSION ]; then
+    version="$NVIM_VERSION"
+fi
 
-cd ~/personal/neovim
-git fetch
+echo "version: \"$version\""
 
-sudo apt install cmake gettext lua5.1 liblua5.1-0-dev
-make CMAKE_BUILD_TYPE=RelWithDebInfo
-sudo make install
+# neovim btw
+if [ ! -d $HOME/personal/neovim ]; then
+    git clone https://github.com/neovim/neovim.git $HOME/personal/neovim
+fi
+
+sudo apt -y install cmake gettext lua5.1 liblua5.1-0-dev
+
+git -C ~/personal/neovim fetch --all
+git -C ~/personal/neovim checkout $version
+
+make -C ~/personal/neovim clean
+make -C ~/personal/neovim CMAKE_BUILD_TYPE=RelWithDebInfo
+sudo make -C ~/personal/neovim install
 
