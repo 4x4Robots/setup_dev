@@ -44,6 +44,7 @@ execute() {
 log "---------- setup_dev -> dev-env ----------"
 log "script_dir=$script_dir"
 
+# Copy all directories in directory $from
 copy_dir() {
     from=$1
     to=$2
@@ -54,6 +55,7 @@ copy_dir() {
         log "full path origin: $(pwd)"
         dirs=$(find . -mindepth 1 -maxdepth 1 -type d)  # find all directories
         for dir in $dirs; do
+            log "copying over directory: $dir"
             execute rm -rf $to/$dir
             execute cp -r $dir $to/$dir
         done
@@ -61,7 +63,20 @@ copy_dir() {
     popd > /dev/null # pop location from stack and move back (and silence the operation)
 }
 
+# Copy one file into directory
+copy_file() {
+    from=$1  # file
+    to=$2  # directory
+    name=$(basename $from)  # only last part (real file name)
+    log "copying over file: $name"
+
+    execute rm $to/$name
+    execute cp $from $to/$name
+}
+
 # Copy all subdirectories of .config/
 
 copy_dir .config $XDG_CONFIG_HOME
+
+copy_file .specialconfig $XDG_CONFIG_HOME
 
