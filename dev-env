@@ -1,12 +1,11 @@
 #!/usr/bin/env zsh
 
-# The goal of this script is to execute all scripts in runs/
+# The goal of this script is to copy all dotfiles.
 
 # Get directory in which this script resides.
 script_dir="$( cd $( dirname "${BASH_SOURCE[0]}" ) &> /dev/null && pwd )"
 
 # Init variables
-filter=""
 dry_run="0"
 
 # Parse arguments
@@ -36,23 +35,7 @@ execute() {
     "$@"
 }
 
-log "---------- setup_dev -> run ----------"
+log "---------- setup_dev -> dev-env ----------"
 log "script_dir=$script_dir"
-log "env: $env -- filter: $filter"
 
-# Get all scripts (executable files) in directory ./runs/
-scripts=`find $script_dir/runs -maxdepth 1 -mindepth 1 -executable -type f`
-
-# Execute each script
-log "Searching for scripts in runs/"
-for script in $scripts; do
-    # script does not contain filter
-    if echo "$script" | grep -qv "$filter"; then
-        log "grep \"$filter\" filtered out $script"
-        continue
-    fi
-
-    execute $script
-
-done
 
