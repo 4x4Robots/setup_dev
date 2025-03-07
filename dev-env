@@ -8,17 +8,23 @@ script_dir="$( cd $( dirname "${BASH_SOURCE[0]}" ) &> /dev/null && pwd )"
 # Init variables
 dry_run="0"
 
+# Check env variables
+if [ -z "$XDG_CONFIG_HOME" ]; then
+    echo "no xdg config home"
+    echo "using ~/.config"
+    XDG_CONFIG_HOME=$HOME/.config
+fi
+
 # Parse arguments
 while [[ $# -gt 0 ]]; do
     echo "ARG: \"$1\""
     if [[ "$1" == "--dry" ]]; then
         dry_run="1"
-    else
-        filter="$1"
     fi
     shift
 done
 
+# Better echo with DRY run
 log() {
     if [[ $dry_run == "1" ]]; then
         echo "[DRY_RUN]: $@"
@@ -38,4 +44,24 @@ execute() {
 log "---------- setup_dev -> dev-env ----------"
 log "script_dir=$script_dir"
 
+copy_dir() {
+    from=$1
+    to=$2
+    log "copying over files from: $from"
+
+    pushd $from > /dev/null  # add a location to the stack and move there (and silence the operation)
+    (
+        log "full path origin: $(pwd)"
+        dirs=$(find . -mindepth 1 -maxdepth 1 -type d)  # find all directories
+        for dir in $dirs; do
+            execute rm -rf $to/$dir
+            execute cp -r $dir $to/$dir
+        done
+    )
+    popd > /dev/null # pop location from stack and move back (and silence the operation)
+}
+
+# Copy all subdirectories of .config/
+
+copy_dir .config $XDG_CONFIG_HOME
 
