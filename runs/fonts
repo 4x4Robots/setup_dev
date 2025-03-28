@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+echo "installing fonts"
+
+dir_fonts="~/.local/share/fonts/"
+
+# Copy one file into directory
+copy_file() {
+    from=$1  # file
+    to=$2  # directory
+    name=$(basename $from)  # only last part (real file name)
+    log "copying over file: $name"
+
+    #rm $to/$name
+    cp $from $to/$name
+}
+
+echo "installing CommitMono"
+# must be downloaded from for icon support (Nerd fonts)
+# https://www.nerdfonts.com/font-downloads
+
+
+
+echo "updating font cache"
+echo "fc-cache -f -v"
+
+fc-cache -f -v
+
