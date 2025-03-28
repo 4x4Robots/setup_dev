@@ -2,7 +2,7 @@
 
 echo "installing fonts"
 
-dir_fonts="~/.local/share/fonts/"
+dir_fonts="$HOME/.local/share/fonts/"
 
 # Copy one file into directory
 copy_file() {
@@ -15,10 +15,17 @@ copy_file() {
     cp $from $to/$name
 }
 
-echo "installing CommitMono"
+echo "copying CommitMono ..."
 # must be downloaded from for icon support (Nerd fonts)
 # https://www.nerdfonts.com/font-downloads
 
+#copy_file ../data/fonts/CommitMono/*.otf $dir_fonts 
+#copy_file .specialconfig $XDG_CONFIG_HOME
+
+# https://stackoverflow.com/questions/15617016/copy-all-files-with-a-certain-extension-from-all-subdirectories
+#find . -name \*.otf -exec cp {} $dir_fonts \;
+find ../data/fonts/CommitMono/ -name \*.otf -exec echo {} \;
+find ../data/fonts/CommitMono/ -name \*.otf -exec cp {} $dir_fonts \;
 
 
 echo "updating font cache"
