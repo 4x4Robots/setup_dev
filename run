@@ -45,7 +45,8 @@ scripts=`find $script_dir/runs -maxdepth 1 -mindepth 1 -executable -type f`
 
 # Execute each script
 log "Searching for scripts in runs/"
-for script in $scripts; do
+# in zsh split at newline with $=
+for script ($=scripts); do
     # script does not contain filter
     if echo "$script" | grep -qv "$filter"; then
         log "grep \"$filter\" filtered out $script"
