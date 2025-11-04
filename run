@@ -36,8 +36,11 @@ execute() {
     "$@"
 }
 
-log "---------- setup_dev -> run ----------"
 log "script_dir=$script_dir"
+log "------ setup_dev -> essentials -------"
+execute $script_dir/essentials/git
+
+log "---------- setup_dev -> run ----------"
 log "env: $env -- filter: $filter"
 
 # Get all scripts (executable files) in directory ./runs/
