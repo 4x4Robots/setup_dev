@@ -1,4 +1,11 @@
-# Use headless Ubuntu/Xfce containers with VNC
-# https://github.com/accetto/ubuntu-vnc-xfce-g3
-FROM accetto/ubuntu-vnc-xfce-g3
-# You should be able to connect to port 5901 with a VNC viewer with password: headless
+# Use latest LTS Ubuntu version
+FROM ubuntu:noble
+# Set env debian_frontend for less error messages
+#ENV DEBIAN_FRONTEND noninteractive
+# Install the unminimize package
+RUN apt-get update && apt-get install -y unminimize
+# Run the unminimize command to provide more standard packages
+# See https://hub.docker.com/_/ubuntu for more information
+RUN yes | unminimize
+# Install sudo command
+RUN apt-get update && apt-get install -y sudo
