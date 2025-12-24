@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo_name=$(basename "$(git rev-parse --show-toplevel)")
+backup_url="ssh://yourserver/home/git/${repo_name}.git"
+
+git remote remove backup 2>/dev/null || true
+git remote add backup "$backup_url"
+
+echo "Backup remote set to: $backup_url"
+

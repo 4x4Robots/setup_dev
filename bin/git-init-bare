@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+repo="$1"
+
+mkdir -p /home/git
+cd /home/git
+
+if [ ! -d "$repo.git" ]; then
+    git init --bare "$repo.git"
+    echo "Created bare repo: $repo.git"
+fi
+
