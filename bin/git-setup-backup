@@ -1,8 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+# you need to ensure to give full paths (with a / )
+server_url="$1"
+path_on_server="$2"
+
 repo_name=$(basename "$(git rev-parse --show-toplevel)")
-backup_url="ssh://yourserver/home/git/${repo_name}.git"
+backup_url="ssh://${server_url}${path_on_server}${repo_name}.git"
+# should be something like "ssh://192.168.178.125/home/git/repo_name.git"
 
 git remote remove backup 2>/dev/null || true
 git remote add backup "$backup_url"
