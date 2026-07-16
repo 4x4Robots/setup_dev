@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Check if partial keyname argument is provided
+if [ -z "$1" ]; then
+    echo "Usage: $0 <partial_keyname>"
+    echo "Example: $0 id_ed25519"
+    exit 1
+fi
+
+PARTIAL_KEYNAME="$1"
+
+# Find the first matching key file in ~/.ssh/
+KEY_FILE=$(find ~/.ssh/ -name "*${PARTIAL_KEYNAME}*" -type f -print -quit)
+
+if [ -z "$KEY_FILE" ]; then
+    echo "Error: No SSH key file matching '*${PARTIAL_KEYNAME}*' found in ~/.ssh/"
+    exit 1
+fi
+
+echo "Found key file: $KEY_FILE"
+
+# Start ssh-agent and add the key
+eval "$(ssh-agent -s)"
+ssh-add "$KEY_FILE"
+
+echo "SSH agent started and key added successfully."
+
