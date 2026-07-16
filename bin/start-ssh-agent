@@ -2,9 +2,9 @@
 
 # Check if partial keyname argument is provided
 if [ -z "$1" ]; then
-    echo "Usage: $0 <partial_keyname>"
-    echo "Example: $0 id_ed25519"
-    exit 1
+    echo "Usage: source $0 <partial_keyname>"
+    echo "Example: source $0 id_ed25519"
+    return 1
 fi
 
 PARTIAL_KEYNAME="$1"
@@ -14,13 +14,16 @@ KEY_FILE=$(find ~/.ssh/ -name "*${PARTIAL_KEYNAME}*" -type f -print -quit)
 
 if [ -z "$KEY_FILE" ]; then
     echo "Error: No SSH key file matching '*${PARTIAL_KEYNAME}*' found in ~/.ssh/"
-    exit 1
+    return 1
 fi
 
 echo "Found key file: $KEY_FILE"
 
-# Start ssh-agent and add the key
-eval "$(ssh-agent -s)"
+# Start ssh-agent if not already running
+if [ -z "$SSH_AUTH_SOCK" ] || ! ssh-add -l >/dev/null 2>&1; then
+    eval "$(ssh-agent -s)"
+fi
+
 ssh-add "$KEY_FILE"
 
 echo "SSH agent started and key added successfully."

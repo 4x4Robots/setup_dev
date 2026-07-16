@@ -2,5 +2,5 @@
 # Make an alias for invoking commands you use constantly
 # alias p='python'
 
-alias git-auth=~/Projects/setup_dev/bin/start-ssh-agent
+alias git-auth='source ~/Projects/setup_dev/bin/start-ssh-agent'
 
