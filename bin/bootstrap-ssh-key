@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Bootstrap script for generating SSH keys for GitHub
+# Simplifies the creation of SSH keys on new machines
+
+echo "bootstrap-ssh-key"
+
+# Generate SSH key with current username and hostname
+ssh-keygen -t ed25519 -C "$(whoami)@$(hostname)" -f ~/.ssh/id_ed25519_github_4x4robots
+
+# Start ssh-agent and add the key
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/id_ed25519_github_4x4robots
+
+# Print the public key for easy copying
+echo ""
+echo "Generated SSH public key:"
+echo "-----------------------"
+cat ~/.ssh/id_ed25519_github_4x4robots.pub
+echo "-----------------------"
+echo "Copy the key above and add it to your GitHub account at:"
+echo "https://github.com/settings/keys"
