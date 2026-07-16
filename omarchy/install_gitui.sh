@@ -2,6 +2,6 @@
 
 # echo "Installing gitui (a terminal-ui for git)..."
 
-# Use package manager to install Brave
+# Use package manager to install
 # sudo pacman -S gitui
 
